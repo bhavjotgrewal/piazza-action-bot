@@ -16,6 +16,9 @@ PIAZZA_NETWORK_ID = os.getenv("PIAZZA_NETWORK_ID")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
+GREEN = '\033[92m'
+RESET = '\033[0m'
+
 # Initialize Piazza
 p = Piazza()
 p.user_login(email=PIAZZA_EMAIL, password=PIAZZA_PASSWORD)
@@ -42,6 +45,8 @@ def check_for_new_posts():
 
 async def main():
     last_post_id = None
+    print(f"{GREEN}STARTING SCRAPE{RESET}")
+    send_telegram_message("Scrape started!")
     while True:
         try:
             new_post = check_for_new_posts()
@@ -49,12 +54,12 @@ async def main():
                 post_info = get_post_info(new_post)
                 await send_telegram_message(post_info)
                 last_post_id = new_post['id']
-            await asyncio.sleep(30)
+            await asyncio.sleep(15)
         except Exception as e:
             error_message = f"An error occurred: {str(e)}"
             print(error_message)
             await send_telegram_message(error_message)
-            await asyncio.sleep(30)
+            await asyncio.sleep(15)
 
 if __name__ == "__main__":
     asyncio.run(main())
