@@ -46,7 +46,7 @@ def check_for_new_posts():
 async def main():
     last_post_id = None
     print(f"{GREEN}STARTING SCRAPE{RESET}")
-    send_telegram_message("Scrape started!")
+    await send_telegram_message("Scrape started!")
     while True:
         try:
             new_post = check_for_new_posts()
